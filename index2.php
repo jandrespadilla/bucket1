@@ -2,28 +2,41 @@
 require_once './vendor/autoload.php';
 
 use Aws\S3\S3Client;
-use Awd\Exception\S3Exception;
+use Awd\S3\Exception\S3Exception;
 
-
-if (isset($_FILE['file'])) {
-    s3_upload_put_object($_FILE['file']);
-}
-
+if (isset($_FILES['file'])) {
+  
+    
+    s3_upload_put_object($_FILES['file']);
+} 
 function s3_upload_put_object($file){
 
     $option = [
-        'region' => 'us-west-2',
+        'region' => 'us-east-1',
         'version' => '2006-03-01',
-        'credential' => [
-            'key' => '',
-            'secret' => '',
+        'credentials' => [
+            'key' => 'AKIA5TF3ZI2AFQBFO2H5',
+            'secret' => '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',
         ]
 
         ];
+        $file_name = $file['name'];
+        $file_path = $file['tmp_name'];
+        try {
+            $s3Client = new S3Client($option);
+            $result = $s3Client->putObject([
+                    'Bucket' => 'bucket1-test-siam',
+                    'Key' => 'abc/'.$file_name,
+                    'SourceFile' => $file_path
 
+            ]);
+            echo "<pre>".print_r($result)."</pre>";
+        } catch (S3Exception $e) {
+            echo "<pre>".print_r($e)."</pre>";
+             echo $e->getMessage().'\n';
+        }
 }
-
-
+ 
 
 ?>
 
@@ -42,5 +55,6 @@ function s3_upload_put_object($file){
         <input type="file" name='file' id='file'>
         <button type='submit'> Subir archivo </button>
     </form>
+   
 </body>
 </html>
