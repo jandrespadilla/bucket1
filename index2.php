@@ -15,8 +15,8 @@ function s3_upload_put_object($file){
         'region' => 'us-east-1',
         'version' => '2006-03-01',
         'credentials' => [
-            'key' => 'AKIA5TF3ZI2AFQBFO2H5',
-            'secret' => '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',
+            'key' => '',
+            'secret' => '',
         ]
 
         ];
